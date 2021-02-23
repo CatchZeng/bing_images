@@ -24,19 +24,21 @@ def file_name(url, index, prefix = 'image') -> str:
         print("[!] Issue getting: {}\n[!] Er = 0ror:: {}".format(url, e))
         return prefix
 
-def make_image_dir(output_dir, sub_dir, force_replace=False) -> str:
-    cwd = os.getcwd()
-    image_dir = os.path.join(cwd, output_dir, sub_dir)
+DEFAULT_OUTPUT_DIR = "bing-images"
+
+def make_image_dir(output_dir, force_replace=False) -> str:
+    image_dir = output_dir
+    if len(output_dir) < 1:
+        image_dir = os.path.join(os.getcwd(), DEFAULT_OUTPUT_DIR)
+    
     if force_replace:
         if os.path.isdir(image_dir):
             shutil.rmtree(image_dir)
     try:
-        if not os.path.isdir("{}/{}/".format(cwd, output_dir)):
-            os.makedirs("{}/{}/".format(cwd, output_dir))
+        if not os.path.isdir(image_dir):
+            os.makedirs(image_dir)
     except:
         pass
-    if not os.path.isdir("{}/{}/{}".format(cwd, output_dir, sub_dir)):
-        os.makedirs("{}/{}/{}".format(cwd, output_dir, sub_dir))
 
     return image_dir
 

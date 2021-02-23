@@ -75,14 +75,14 @@ def fetch_image_urls(
 def download_images(
     query: str,
     limit: int = 20,
-    output_dir='dataset',
-    processes: int = 20,
+    output_dir='',
+    pool_size: int = 20,
     adult: bool = False,
     file_type: str = "jpg",
     filters: str = '',
     force_replace=False
 ):
-    image_dir = make_image_dir(output_dir, query, force_replace)
+    image_dir = make_image_dir(output_dir, force_replace)
 
     urls = fetch_image_urls(query, limit, adult, file_type, filters)
     index = 1
@@ -96,15 +96,17 @@ def download_images(
 
     start = timer()
 
-    tp =  processes
-    if limit < processes:
-        tp = limit
-    results = ThreadPool(tp).imap_unordered(download_image_with_thread, entries)
+    ps = pool_size
+    if limit < pool_size:
+        ps = limit
+    results = ThreadPool(ps).imap_unordered(
+        download_image_with_thread, entries)
     for index in results:
         print("Image #{} Downloaded".format(index))
 
     print("Done")
     print(f"Elapsed Time: {timer() - start}")
+
 
 def download_image_with_thread(entry):
     url, path, index = entry
@@ -112,5 +114,7 @@ def download_image_with_thread(entry):
     download_image(url, path)
     return index
 
+
 if __name__ == '__main__':
-    download_images("cat", 20, file_type="png", force_replace=True)
+    download_images("cat", 20, output_dir="/Users/catchzeng/Desktop/cat",pool_size=10,
+                    file_type="png", force_replace=True)
