@@ -1,0 +1,4 @@
+build
+dist
+bing_image/__pycache__
+bing_image.egg-info
