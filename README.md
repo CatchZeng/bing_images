@@ -2,6 +2,12 @@
 
 Python library to fetch image urls and download using multithreading from [Bing.com](https://bing.com/).
 
+## Features
+
+- [x] Support file type filters.
+- [x] Download using multithreading and custom thread pool size.
+- [x] Support fetch image urls api.
+
 ## Requires
 
 ```shell
