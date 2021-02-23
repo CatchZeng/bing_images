@@ -2,7 +2,7 @@ try:
     from util import file_name, make_image_dir, download_image
 except ImportError:  # Python 3
     from .util import file_name, make_image_dir, download_image
-from typing import List
+from typing import Counter, List
 from multiprocessing.pool import ThreadPool
 from time import time as timer
 import requests
@@ -85,14 +85,14 @@ def download_images(
     image_dir = make_image_dir(output_dir, query, force_replace)
 
     urls = fetch_image_urls(query, limit, adult, file_type, filters)
-    counter = 1
+    index = 1
     print("Save path: {}".format(image_dir))
     entries = []
     for url in urls:
-        name = file_name(url, counter, query)
+        name = file_name(url, index, query)
         path = os.path.join(image_dir, name)
-        entries.append((url, path))
-        counter += 1
+        entries.append((url, path, index))
+        index += 1
 
     start = timer()
 
@@ -100,26 +100,17 @@ def download_images(
     if limit < processes:
         tp = limit
     results = ThreadPool(tp).imap_unordered(download_image_with_thread, entries)
-    for path in results:
-        print("Downloaded", path)
+    for index in results:
+        print("Image #{} Downloaded".format(index))
 
     print("Done")
     print(f"Elapsed Time: {timer() - start}")
 
-
 def download_image_with_thread(entry):
-    url, path = entry
-    print("Downloading {} from {}".format(path, url))
+    url, path, index = entry
+    print("Downloading image #{} from {}".format(index, url))
     download_image(url, path)
-    return path
-
+    return index
 
 if __name__ == '__main__':
-    # urls = fetch_image_urls("cat", limit=100, file_type='png',
-    #                         filters='+filterui:aspect-square+filterui:color2-bw')
-    # print("{} images.".format(len(urls)))
-    # counter = 1
-    # for url in urls:
-    #     print("{}: {}".format(counter, url))
-    #     counter += 1
     download_images("cat", 20, file_type="png", force_replace=True)
