@@ -1,11 +1,19 @@
 # bing_images
 
-Python library to fetch image urls and download using multithreading from Bing.com.
+Python library to fetch image urls and download using multithreading from [Bing.com](https://bing.com/).
+
+## Requires
+
+```shell
+python3 -m pip install requests
+```
+
+> requests>=2.24.0
 
 ## Installation
 
 ```shell
-pip install bing-images
+python3 -m pip install bing-images
 ```
 
 ## Usage
