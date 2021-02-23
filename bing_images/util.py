@@ -39,3 +39,6 @@ def make_image_dir(output_dir, sub_dir, force_replace=False) -> str:
         os.makedirs("{}/{}/{}".format(cwd, output_dir, sub_dir))
 
     return image_dir
+
+if __name__ == '__main__':
+    print("util")

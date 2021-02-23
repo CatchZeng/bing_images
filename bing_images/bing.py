@@ -1,5 +1,10 @@
-from .util import file_name, make_image_dir, download_image
+try:
+    from util import file_name, make_image_dir, download_image
+except ImportError:  # Python 3
+    from .util import file_name, make_image_dir, download_image
 from typing import List
+from multiprocessing.pool import ThreadPool
+from time import time as timer
 import requests
 import re
 import os
@@ -11,6 +16,7 @@ HEADERS = {
 
 class Bing:
     def fetch_image_urls(
+        self,
         query: str,
         first: int = 0,
         count: int = 20,
@@ -70,21 +76,42 @@ def download_images(
     query: str,
     limit: int = 20,
     output_dir='dataset',
+    processes: int = 20,
     adult: bool = False,
     file_type: str = "jpg",
     filters: str = '',
     force_replace=False
 ):
     image_dir = make_image_dir(output_dir, query, force_replace)
+
     urls = fetch_image_urls(query, limit, adult, file_type, filters)
     counter = 1
-    print("save path: {}".format(image_dir))
+    print("Save path: {}".format(image_dir))
+    entries = []
     for url in urls:
         name = file_name(url, counter, query)
-        print("downloading {} {}".format(name, url))
         path = os.path.join(image_dir, name)
-        download_image(url, path)
+        entries.append((url, path))
         counter += 1
+
+    start = timer()
+
+    tp =  processes
+    if limit < processes:
+        tp = limit
+    results = ThreadPool(tp).imap_unordered(download_image_with_thread, entries)
+    for path in results:
+        print("Downloaded", path)
+
+    print("Done")
+    print(f"Elapsed Time: {timer() - start}")
+
+
+def download_image_with_thread(entry):
+    url, path = entry
+    print("Downloading {} from {}".format(path, url))
+    download_image(url, path)
+    return path
 
 
 if __name__ == '__main__':
