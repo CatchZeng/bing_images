@@ -105,7 +105,8 @@ def download_images(
         print("Image #{} Downloaded".format(index))
 
     print("Done")
-    print(f"Elapsed Time: {timer() - start}")
+    elapsed = timer() - start
+    print("Elapsed Time: %.2fs" % elapsed)
 
 
 def download_image_with_thread(entry):

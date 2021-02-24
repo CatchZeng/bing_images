@@ -10,16 +10,12 @@ Python library to fetch image urls and download using multithreading from [Bing.
 
 ## Requires
 
-```shell
-python3 -m pip install requests
-```
-
-> requests>=2.24.0
+- requests>=2.24.0
 
 ## Installation
 
 ```shell
-python3 -m pip install bing-images
+pip install bing-images
 ```
 
 ## Usage
@@ -97,5 +93,5 @@ Image #18 Downloaded
 Image #9 Downloaded
 Image #19 Downloaded
 Done
-Elapsed Time: 58.56829500198364
+Elapsed Time: 58.56s
 ```
