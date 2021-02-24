@@ -1,4 +1,8 @@
-# bing_images
+# bing_images 
+
+[![Supported Versions](https://img.shields.io/pypi/pyversions/bing-images.svg)](https://pypi.org/project/bing-images)
+[![PyPI Latest Release](https://img.shields.io/pypi/v/bing-images.svg)](https://pypi.org/project/bing-images/)
+[![License](https://img.shields.io/pypi/l/bing-images.svg)](https://github.com/bing-images-dev/bing-images/blob/master/LICENSE)
 
 Python library to fetch image urls and download using multithreading from [Bing.com](https://bing.com/).
 
