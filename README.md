@@ -47,7 +47,12 @@ download.py
 ```py
 from bing_images import bing
 
-bing.download_images("cat", 20, output_dir="/Users/catchzeng/Desktop/cat",pool_size=10, file_type="png", force_replace=True)
+bing.download_images("cat",
+                      20,
+                      output_dir="/Users/catchzeng/Desktop/cat",
+                      pool_size=10,
+                      file_type="png",
+                      force_replace=True)
 ```
 
 > - **output_dir**: the default output_dir is `os.path.join(os.getcwd(), "bing-images")`
@@ -106,12 +111,18 @@ Elapsed Time: 29.91s
 
 ### Download images with **filterui** filters
 
-download-square.py
+download-square-and-black-white.py
 
 ```py
 from bing_images import bing
 
-bing.download_images("cat", 20, output_dir="/Users/catchzeng/Desktop/cat", pool_size=20, file_type="png", filters='+filterui:aspect-square+filterui:color2-bw', force_replace=True)
+bing.download_images("cat",
+                      20,
+                      output_dir="/Users/catchzeng/Desktop/cat",
+                      pool_size=20,
+                      file_type="png",
+                      filters='+filterui:aspect-square+filterui:color2-bw',
+                      force_replace=True)
 ```
 
 ![](./images/cat-bw.jpg)
