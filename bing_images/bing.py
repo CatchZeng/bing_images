@@ -117,5 +117,5 @@ def download_image_with_thread(entry):
 
 
 if __name__ == '__main__':
-    download_images("cat", 20, output_dir="/Users/catchzeng/Desktop/cat",pool_size=10,
+    download_images("cat", 20, output_dir="/Users/catchzeng/Desktop/cat", pool_size=10,
                     file_type="png", force_replace=True)
