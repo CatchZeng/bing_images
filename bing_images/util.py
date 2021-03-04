@@ -4,6 +4,7 @@ import posixpath
 import urllib
 import os
 
+DEFAULT_OUTPUT_DIR = "bing-images"
 
 def download_image(url, path) -> bool:
     try:
@@ -12,28 +13,44 @@ def download_image(url, path) -> bool:
             with open(path, 'wb') as f:
                 r.raw.decode_content = True
                 shutil.copyfileobj(r.raw, f)
-        return True
+            return True
+        else:
+            print("[!] download image: {}\n[!] Err :: {}".format(url, r.content))
+            return False
     except Exception as e:
         print("[!] download image: {}\n[!] Err :: {}".format(url, e))
         return False
-
 
 def file_name(url, index, prefix='image') -> str:
     try:
         path = urllib.parse.urlsplit(url).path
         filename = posixpath.basename(path).split('?')[0]
-        file_type = filename.split(".")[-1]
-        if file_type.lower() not in ["jpe", "jpeg", "jfif", "exif", "tiff", "gif", "bmp", "png", "webp", "jpg"]:
-            file_type = "jpg"
-        result = "{}_{}.{}".format(prefix, str(index), file_type)
+        type, _ = file_data(filename)
+        result = "{}_{}.{}".format(prefix, index, type)
         return result
     except Exception as e:
         print("[!] Issue getting: {}\n[!] Err :: {}".format(url, e))
         return prefix
 
+def rename(name, index, prefix='image') -> str:
+    try:
+        type, _ = file_data(name)
+        result = "{}_{}.{}".format(prefix, index, type)
+        return result
+    except Exception as e:
+        print("[!] Issue getting: {}\n[!] Err :: {}".format(name, e))
+        return prefix
 
-DEFAULT_OUTPUT_DIR = "bing-images"
-
+def file_data(name):
+    try:
+        type = name.split(".")[-1]
+        name = name.split(".")[0]
+        if type.lower() not in ["jpe", "jpeg", "jfif", "exif", "tiff", "gif", "bmp", "png", "webp", "jpg"]:
+           type = "jpg"
+        return (type, name)
+    except Exception as e:
+        print("[!] Issue getting: {}\n[!] Err :: {}".format(name, e))
+        return (name, "jpg")
 
 def make_image_dir(output_dir, force_replace=False) -> str:
     image_dir = output_dir

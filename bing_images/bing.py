@@ -1,7 +1,7 @@
 try:
-    from util import file_name, make_image_dir, download_image
+    from util import file_name, rename, make_image_dir, download_image
 except ImportError:  # Python 3
-    from .util import file_name, make_image_dir, download_image
+    from .util import file_name, rename, make_image_dir, download_image
 from typing import Counter, List
 from multiprocessing.pool import ThreadPool
 from time import time as timer
@@ -82,46 +82,64 @@ def download_images(
     filters: str = '',
     force_replace=False
 ):
+    start = timer()
     image_dir = make_image_dir(output_dir, force_replace)
+    print("Save path: {}".format(image_dir))
 
     urls = fetch_image_urls(query, limit, adult, file_type, filters)
-    index = 1
-    print("Save path: {}".format(image_dir))
-    entries = []
-    for url in urls:
-        name = file_name(url, index, query)
-        path = os.path.join(image_dir, name)
-        entries.append((url, path, index))
-        index += 1
+    entries = get_image_entries(urls, image_dir)
 
-    start = timer()
-
-    failedIndices = []
     ps = pool_size
     if limit < pool_size:
         ps = limit
-    results = ThreadPool(ps).imap_unordered(
-        download_image_with_thread, entries)
-    for (index, result) in results:
-        if result:
-            print("Image #{} Downloaded".format(index))
-        else:
-            failedIndices.append(index)
+    download_image_entries(entries, ps)
+
+    rename_images(image_dir, query)
 
     print("Done")
-    if len(failedIndices) > 0:
-        print("Failed Indices: {}".format(failedIndices))
     elapsed = timer() - start
     print("Elapsed Time: %.2fs" % elapsed)
 
+def rename_images(dir, prefix):
+    files = os.listdir(dir)
+    index = 1
+    for f in files:
+        if f.startswith("."):
+            print("Escape {}".format(f))
+            continue
+        src = os.path.join(dir, f)
+        name = rename(f, index, prefix)
+        dst = os.path.join(dir, name)
+        os.rename(src, dst)
+        print("Rename {} to {}".format(src, dst))
+        index = index + 1
+
+def download_image_entries(entries, pool_size):
+    counter = 0
+    results = ThreadPool(pool_size).imap_unordered(
+        download_image_with_thread, entries)
+    for (url, result, path) in results:
+        if result:
+            print("#{} {} Downloaded {}".format(counter, url, path))
+            counter = counter + 1
+
+def get_image_entries(urls, dir):
+    entries = []
+    i = 0
+    for url in urls:
+        name = file_name(url, i, "#tmp#")
+        path = os.path.join(dir, name)
+        entries.append((url, path))
+        i = i + 1
+    return entries
 
 def download_image_with_thread(entry):
-    url, path, index = entry
-    print("Downloading image #{} from {}".format(index, url))
+    url, path = entry
+    print("Downloading image from {}".format(url))
     result = download_image(url, path)
-    return (index, result)
+    return (url, result, path)
 
 
 if __name__ == '__main__':
     download_images("cat", 20, output_dir="/Users/catchzeng/Desktop/cat", pool_size=10,
-                    file_type="png", force_replace=True)
+                    file_type="jpg", force_replace=True)
