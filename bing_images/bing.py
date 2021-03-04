@@ -96,15 +96,21 @@ def download_images(
 
     start = timer()
 
+    failedIndices = []
     ps = pool_size
     if limit < pool_size:
         ps = limit
     results = ThreadPool(ps).imap_unordered(
         download_image_with_thread, entries)
-    for index in results:
-        print("Image #{} Downloaded".format(index))
+    for (index, result) in results:
+        if result:
+            print("Image #{} Downloaded".format(index))
+        else:
+            failedIndices.append(index)
 
     print("Done")
+    if len(failedIndices) > 0:
+        print("Failed Indices: {}".format(failedIndices))
     elapsed = timer() - start
     print("Elapsed Time: %.2fs" % elapsed)
 
@@ -112,8 +118,8 @@ def download_images(
 def download_image_with_thread(entry):
     url, path, index = entry
     print("Downloading image #{} from {}".format(index, url))
-    download_image(url, path)
-    return index
+    result = download_image(url, path)
+    return (index, result)
 
 
 if __name__ == '__main__':
