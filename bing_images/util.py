@@ -15,13 +15,13 @@ def download_image(url, path) -> bool:
                 shutil.copyfileobj(r.raw, f)
             return True
         else:
-            print("[!] download image: {}\n[!] Err :: {}".format(url, r.content))
+            print("[!] Download image: {}\n[!] Err :: {}".format(url, r.status_code))
             return False
     except Exception as e:
-        print("[!] download image: {}\n[!] Err :: {}".format(url, e))
+        print("[!] Download image: {}\n[!] Err :: {}".format(url, e))
         return False
 
-def file_name(url, index, prefix='image') -> str:
+def get_file_name(url, index, prefix='image') -> str:
     try:
         path = urllib.parse.urlsplit(url).path
         filename = posixpath.basename(path).split('?')[0]
@@ -29,7 +29,7 @@ def file_name(url, index, prefix='image') -> str:
         result = "{}_{}.{}".format(prefix, index, type)
         return result
     except Exception as e:
-        print("[!] Issue getting: {}\n[!] Err :: {}".format(url, e))
+        print("[!] Get file name: {}\n[!] Err :: {}".format(url, e))
         return prefix
 
 def rename(name, index, prefix='image') -> str:
@@ -38,7 +38,7 @@ def rename(name, index, prefix='image') -> str:
         result = "{}_{}.{}".format(prefix, index, type)
         return result
     except Exception as e:
-        print("[!] Issue getting: {}\n[!] Err :: {}".format(name, e))
+        print("[!] Rename: {}\n[!] Err :: {}".format(name, e))
         return prefix
 
 def file_data(name):

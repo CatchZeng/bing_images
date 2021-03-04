@@ -1,7 +1,7 @@
 try:
-    from util import file_name, rename, make_image_dir, download_image
+    from util import get_file_name, rename, make_image_dir, download_image
 except ImportError:  # Python 3
-    from .util import file_name, rename, make_image_dir, download_image
+    from .util import get_file_name, rename, make_image_dir, download_image
 from typing import Counter, List
 from multiprocessing.pool import ThreadPool
 from time import time as timer
@@ -89,6 +89,7 @@ def download_images(
     urls = fetch_image_urls(query, limit, adult, file_type, filters)
     entries = get_image_entries(urls, image_dir)
 
+    print("Downloading images")
     ps = pool_size
     if limit < pool_size:
         ps = limit
@@ -98,11 +99,13 @@ def download_images(
 
     print("Done")
     elapsed = timer() - start
-    print("Elapsed Time: %.2fs" % elapsed)
+    print("Elapsed time: %.2fs" % elapsed)
+
 
 def rename_images(dir, prefix):
     files = os.listdir(dir)
     index = 1
+    print("Renaming images")
     for f in files:
         if f.startswith("."):
             print("Escape {}".format(f))
@@ -111,33 +114,35 @@ def rename_images(dir, prefix):
         name = rename(f, index, prefix)
         dst = os.path.join(dir, name)
         os.rename(src, dst)
-        print("Rename {} to {}".format(src, dst))
         index = index + 1
+    print("Finished renaming")
+
 
 def download_image_entries(entries, pool_size):
-    counter = 0
+    counter = 1
     results = ThreadPool(pool_size).imap_unordered(
         download_image_with_thread, entries)
-    for (url, result, path) in results:
+    for (url, result) in results:
         if result:
-            print("#{} {} Downloaded {}".format(counter, url, path))
+            print("#{} {} Downloaded".format(counter, url))
             counter = counter + 1
+
 
 def get_image_entries(urls, dir):
     entries = []
     i = 0
     for url in urls:
-        name = file_name(url, i, "#tmp#")
+        name = get_file_name(url, i, "#tmp#")
         path = os.path.join(dir, name)
         entries.append((url, path))
         i = i + 1
     return entries
 
+
 def download_image_with_thread(entry):
     url, path = entry
-    print("Downloading image from {}".format(url))
     result = download_image(url, path)
-    return (url, result, path)
+    return (url, result)
 
 
 if __name__ == '__main__':
