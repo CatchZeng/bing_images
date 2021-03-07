@@ -63,7 +63,7 @@ def crawl_image_urls(keywords, filters, max_number=10000, proxy=None, proxy_type
     else:
         output_num = max_number
 
-    print("Crawled {} images urls.".format(
+    print("Crawled {} image urls.".format(
         len(image_urls)))
 
     return image_urls[0:output_num]

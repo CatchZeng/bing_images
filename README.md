@@ -48,17 +48,18 @@ Run
 
 ```
 ❯ python fetch_image_urls.py
+Crawled 70 image urls.
 10 images.
-1: http://pngimg.com/uploads/cat/cat_PNG50521.png
+1: http://www.freeiconspng.com/uploads/cat-png-9.png
 2: http://pngimg.com/uploads/cat/cat_PNG1616.png
-3: https://pngimg.com/uploads/cat/cat_PNG50532.png
-4: https://pngimg.com/uploads/cat/cat_PNG1621.png
-5: https://pngimg.com/uploads/cat/cat_PNG1618.png
-6: http://pngimg.com/uploads/cat/cat_PNG1624.png
-7: http://www.pngmart.com/files/5/Black-Cat-PNG-Transparent.png
-8: http://www.myiconfinder.com/uploads/iconsets/256-256-a96249f4c8a9753fd904f8be023dc25c-cat.png
-9: https://pngimg.com/uploads/cat/cat_PNG1619.png
-10: http://pngimg.com/uploads/cat/cat_PNG50521.png
+3: https://pngimg.com/uploads/cat/cat_PNG1621.png
+4: https://pngimg.com/uploads/cat/cat_PNG50532.png
+5: http://pngimg.com/uploads/cat/cat_PNG50501.png
+6: http://www.pngmart.com/files/5/Black-Cat-PNG-Transparent.png
+7: https://pngimg.com/uploads/cat/cat_PNG1618.png
+8: http://pngimg.com/uploads/cat/cat_PNG1624.png
+9: http://assets.stickpng.com/thumbs/580b57fbd9996e24bc43bb8a.png
+10: https://www.freeiconspng.com/uploads/black-cat-png-4.png
 ```
 
 > **filters**: You can visit <https://cn.bing.com/images/search?q=cat> to operate filters through the UI, and then observe the link changes.
@@ -86,31 +87,32 @@ Run
 ```shell
 ❯ python download.py
 Save path: /Users/catchzeng/Desktop/cat
+Crawled 70 image urls.
 Downloading images
 #1 http://pngimg.com/uploads/cat/cat_PNG50509.png Downloaded
 #2 https://pngimg.com/uploads/cat/cat_PNG50498.png Downloaded
-#3 http://www.freepngimg.com/download/cat/22193-3-adorable-cat.png Downloaded
-#4 http://pngimg.com/uploads/cat/cat_PNG106.png Downloaded
-#5 https://pngimg.com/uploads/cat/cat_PNG50465.png Downloaded
-#6 https://pngimg.com/uploads/cat/cat_PNG50417.png Downloaded
-#7 https://pngimg.com/uploads/cat/cat_PNG50480.png Downloaded
-#8 http://pngimg.com/uploads/cat/cat_PNG119.png Downloaded
-#9 https://pngimg.com/uploads/cat/cat_PNG50438.png Downloaded
-#10 http://pngimg.com/uploads/cat/cat_PNG100.png Downloaded
-#11 https://pngimg.com/uploads/cat/cat_PNG50447.png Downloaded
-#12 https://pngimg.com/uploads/cat/cat_PNG50440.png Downloaded
-#13 https://pngimg.com/uploads/cat/cat_PNG50433.png Downloaded
-#14 https://www.pngarts.com/files/1/Baby-Cat-PNG-Free-Download.png Downloaded
-#15 https://cdn.pixabay.com/photo/2017/02/22/16/55/cat-2089916_960_720.png Downloaded
-#16 https://pngimg.com/uploads/cat/cat_PNG50434.png Downloaded
-#17 http://pngimg.com/uploads/cat/cat_PNG50529.png Downloaded
-#18 http://pngimg.com/uploads/cat/cat_PNG113.png Downloaded
-#19 https://purepng.com/public/uploads/large/purepng.com-catanimalscat-981524673949tj5ns.png Downloaded
-#20 https://pngimg.com/uploads/cat/cat_PNG50435.png Downloaded
+#3 http://pngimg.com/uploads/cat/cat_PNG106.png Downloaded
+#4 http://pluspng.com/img-png/png-cute-cat-ginger-cat-1280.png Downloaded
+#5 http://www.freepngimg.com/download/cat/22193-3-adorable-cat.png Downloaded
+#6 http://pngimg.com/uploads/cat/cat_PNG50440.png Downloaded
+#7 http://pngimg.com/uploads/cat/cat_PNG50514.png Downloaded
+#8 https://pngimg.com/uploads/cat/cat_PNG50482.png Downloaded
+#9 https://pngimg.com/uploads/cat/cat_PNG50480.png Downloaded
+#10 https://pngimg.com/uploads/cat/cat_PNG50479.png Downloaded
+#11 http://pngimg.com/uploads/cat/cat_PNG50442.png Downloaded
+#12 https://pngimg.com/uploads/cat/cat_PNG50447.png Downloaded
+#13 https://pngimg.com/uploads/cat/cat_PNG50512.png Downloaded
+#14 https://pngimg.com/uploads/cat/cat_PNG50456.png Downloaded
+#15 https://pngimg.com/uploads/cat/cat_PNG50465.png Downloaded
+#16 http://pngimg.com/uploads/cat/cat_PNG50529.png Downloaded
+#17 http://pngimg.com/uploads/cat/cat_PNG50433.png Downloaded
+#18 http://pngimg.com/uploads/cat/cat_PNG50434.png Downloaded
+#19 http://pngimg.com/uploads/cat/cat_PNG50416.png Downloaded
+#20 https://purepng.com/public/uploads/large/purepng.com-catanimalscat-981524673949tj5ns.png Downloaded
 Renaming images
 Finished renaming
 Done
-Elapsed time: 20.76s
+Elapsed time: 20.32s
 ```
 
 ![](./images/cat.jpg)

@@ -102,14 +102,11 @@ def download_image_with_thread(entry):
     result = download_image(url, path)
     return (url, result)
 
-if __name__ == '__main__':
-    urls = fetch_image_urls("cat",
-                            limit=100,
-                            file_type='png',
-                            filters='+filterui:aspect-square+filterui:color2-bw')
 
-    print("{} images.".format(len(urls)))
-    counter = 1
-    for url in urls:
-        print("{}: {}".format(counter, url))
-        counter += 1
+if __name__ == '__main__':
+    download_images("cat",
+                    20,
+                    output_dir="/Users/catchzeng/Desktop/cat",
+                    pool_size=10,
+                    file_type="png",
+                    force_replace=True)
