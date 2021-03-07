@@ -6,6 +6,7 @@ import os
 
 DEFAULT_OUTPUT_DIR = "bing-images"
 
+
 def download_image(url, path) -> bool:
     try:
         r = requests.get(url, stream=True)
@@ -15,11 +16,13 @@ def download_image(url, path) -> bool:
                 shutil.copyfileobj(r.raw, f)
             return True
         else:
-            print("[!] Download image: {}\n[!] Err :: {}".format(url, r.status_code))
+            print("[!] Download image: {}\n[!] Err :: {}".format(
+                url, r.status_code))
             return False
     except Exception as e:
         print("[!] Download image: {}\n[!] Err :: {}".format(url, e))
         return False
+
 
 def get_file_name(url, index, prefix='image') -> str:
     try:
@@ -32,6 +35,7 @@ def get_file_name(url, index, prefix='image') -> str:
         print("[!] Get file name: {}\n[!] Err :: {}".format(url, e))
         return prefix
 
+
 def rename(name, index, prefix='image') -> str:
     try:
         type, _ = file_data(name)
@@ -41,16 +45,18 @@ def rename(name, index, prefix='image') -> str:
         print("[!] Rename: {}\n[!] Err :: {}".format(name, e))
         return prefix
 
+
 def file_data(name):
     try:
         type = name.split(".")[-1]
         name = name.split(".")[0]
         if type.lower() not in ["jpe", "jpeg", "jfif", "exif", "tiff", "gif", "bmp", "png", "webp", "jpg"]:
-           type = "jpg"
+            type = "jpg"
         return (type, name)
     except Exception as e:
         print("[!] Issue getting: {}\n[!] Err :: {}".format(name, e))
         return (name, "jpg")
+
 
 def make_image_dir(output_dir, force_replace=False) -> str:
     image_dir = output_dir

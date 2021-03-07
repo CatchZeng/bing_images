@@ -13,9 +13,13 @@ Python library to fetch image urls and download using **multithreading** from [B
 - [x] Download using **multithreading** and custom thread **pool size**.
 - [x] Support **purely** obtaining the image urls.
 
-## Requires
+## Requirements
 
-- requests>=2.24.0
+### Chromedriver
+
+- Install [Google Chrome Browser](https://www.google.com/chrome/).
+- Download `chromedriver` from [here](https://chromedriver.chromium.org/downloads).
+- Add `chromedriver` to PATH.
 
 ## Installation
 
