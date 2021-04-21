@@ -6,11 +6,13 @@ try:
     from crawler import crawl_image_urls
 except ImportError:  # Python 3
     from .crawler import crawl_image_urls
-from typing import Counter, List
+from typing import List
 from multiprocessing.pool import ThreadPool
 from time import time as timer
 import os
 import math
+
+_FINISH = False
 
 
 def fetch_image_urls(
@@ -86,11 +88,16 @@ def rename_images(dir, prefix):
 
 
 def download_image_entries(entries, pool_size, limit):
+    global _FINISH
     counter = 1
-    results = ThreadPool(pool_size).imap_unordered(
+    _FINISH = False
+    pool = ThreadPool(pool_size)
+    results = pool.imap_unordered(
         download_image_with_thread, entries)
     for (url, result) in results:
         if counter > limit:
+            _FINISH = True
+            pool.terminate()
             break
         if result:
             print("#{} {} Downloaded".format(counter, url))
@@ -109,6 +116,8 @@ def get_image_entries(urls, dir):
 
 
 def download_image_with_thread(entry):
+    if _FINISH:
+        return
     url, path = entry
     result = download_image(url, path)
     return (url, result)
