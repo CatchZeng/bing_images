@@ -19,13 +19,14 @@ def fetch_image_urls(
     query: str,
     limit: int = 20,
     file_type: str = '',
-    filters: str = ''
+    filters: str = '',
+    extra_query_params: str =''
 ) -> List[str]:
     result = list()
     keywords = query
     if len(file_type) > 0:
         keywords = query + " " + file_type
-    urls = crawl_image_urls(keywords, filters, limit)
+    urls = crawl_image_urls(keywords, filters, limit, extra_query_params)
     for url in urls:
         if isValidURL(url, file_type) and url not in result:
             result.append(url)
@@ -47,7 +48,8 @@ def download_images(
     pool_size: int = 20,
     file_type: str = '',
     filters: str = '',
-    force_replace=False
+    force_replace=False,
+    extra_query_params: str =''
 ):
     start = timer()
     image_dir = make_image_dir(output_dir, force_replace)
@@ -55,7 +57,7 @@ def download_images(
 
     # Fetch more image URLs to avoid some images are invalid.
     max_number = math.ceil(limit*1.5)
-    urls = fetch_image_urls(query, max_number, file_type, filters)
+    urls = fetch_image_urls(query, max_number, file_type, filters, extra_query_params)
     entries = get_image_entries(urls, image_dir)
 
     print("Downloading images")

@@ -10,6 +10,7 @@ Python library to fetch image urls and download using **multithreading** from [B
 
 - [x] Support **file type** filters.
 - [x] Support [Bing.com](https://bing.com/) **filterui** filters.
+- [x] Support **extra query params**, such as `&first=100&tsc=ImageBasicHover` in `https://cn.bing.com/images/search?q=cat&first=100&tsc=ImageBasicHover`
 - [x] Download using **multithreading** and custom thread **pool size**.
 - [x] Support **purely** obtaining the image urls.
 
@@ -36,7 +37,7 @@ fetch_image_urls.py
 ```py
 from bing_images import bing
 
-urls = bing.fetch_image_urls("cat", limit=10, file_type='png', filters='+filterui:aspect-square+filterui:color2-bw')
+urls = bing.fetch_image_urls("cat", limit=10, file_type='png', filters='+filterui:aspect-square+filterui:color2-bw', extra_query_params='&first=1')
 print("{} images.".format(len(urls)))
 counter = 1
 for url in urls:
@@ -76,7 +77,8 @@ bing.download_images("cat",
                       output_dir="/Users/catchzeng/Desktop/cat",
                       pool_size=10,
                       file_type="png",
-                      force_replace=True)
+                      force_replace=True,
+                      extra_query_params='&first=1')
 ```
 
 > - **output_dir**: the default output_dir is `os.path.join(os.getcwd(), "bing-images")`
