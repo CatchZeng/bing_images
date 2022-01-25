@@ -7,7 +7,7 @@ import json
 BASE_URL = "https://www.bing.com/images/search?"
 
 
-def gen_query_url(keywords, filters, extra_query_params =''):
+def gen_query_url(keywords, filters, extra_query_params=''):
     keywords_str = "&q=" + quote(keywords)
     query_url = BASE_URL + keywords_str
     if len(filters) > 0:
@@ -44,7 +44,7 @@ def image_url_from_webpage(driver, max_number=10000):
     return image_urls
 
 
-def crawl_image_urls(keywords, filters, max_number=10000, proxy=None, proxy_type="http", extra_query_params =''):
+def crawl_image_urls(keywords, filters, max_number=10000, proxy=None, proxy_type="http", extra_query_params=''):
     chrome_path = shutil.which("chromedriver")
     chrome_path = "./bin/chromedriver" if chrome_path is None else chrome_path
     chrome_options = webdriver.ChromeOptions()
@@ -53,7 +53,7 @@ def crawl_image_urls(keywords, filters, max_number=10000, proxy=None, proxy_type
             "--proxy-server={}://{}".format(proxy_type, proxy))
     driver = webdriver.Chrome(chrome_path, chrome_options=chrome_options)
 
-    query_url = gen_query_url(keywords, filters, extra_query_params)
+    query_url = gen_query_url(keywords, filters, extra_query_params=extra_query_params)
     driver.set_window_size(1920, 1080)
     driver.get(query_url)
     image_urls = image_url_from_webpage(driver, max_number)
@@ -72,6 +72,6 @@ def crawl_image_urls(keywords, filters, max_number=10000, proxy=None, proxy_type
 
 if __name__ == '__main__':
     images = crawl_image_urls(
-        "mbot png", "+filterui:aspect-square", max_number=10)
+        "cat png", "+filterui:aspect-square", max_number=10)
     for i in images:
         print(i+"\n")
