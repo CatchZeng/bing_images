@@ -1,8 +1,12 @@
 from urllib.parse import quote
 import shutil
-from selenium import webdriver
 import time
 import json
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 BASE_URL = "https://www.bing.com/images/search?"
 
@@ -16,14 +20,13 @@ def gen_query_url(keywords, filters, extra_query_params=''):
     return query_url
 
 
-def image_url_from_webpage(driver, max_number=10000):
+def image_url_from_webpage(driver, max_number=10):
     image_urls = list()
 
-    time.sleep(10)
     img_count = 0
 
     while True:
-        image_elements = driver.find_elements_by_class_name("iusc")
+        image_elements = driver.find_elements(By.CLASS_NAME, "iusc")
         if len(image_elements) > max_number:
             break
         if len(image_elements) > img_count:
@@ -31,7 +34,7 @@ def image_url_from_webpage(driver, max_number=10000):
             driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);")
         else:
-            smb = driver.find_elements_by_class_name("btn_seemore")
+            smb = driver.find_elements(By.CLASS_NAME, "btn_seemore")
             if len(smb) > 0 and smb[0].is_displayed():
                 smb[0].click()
             else:
@@ -45,17 +48,20 @@ def image_url_from_webpage(driver, max_number=10000):
 
 
 def crawl_image_urls(keywords, filters, max_number=10000, proxy=None, proxy_type="http", extra_query_params=''):
-    chrome_path = shutil.which("chromedriver")
-    chrome_path = "./bin/chromedriver" if chrome_path is None else chrome_path
-    chrome_options = webdriver.ChromeOptions()
+    chrome_options = Options()
     if proxy is not None and proxy_type is not None:
         chrome_options.add_argument(
             "--proxy-server={}://{}".format(proxy_type, proxy))
-    driver = webdriver.Chrome(chrome_path, chrome_options=chrome_options)
+
+    driver = webdriver.Chrome(options=chrome_options)
 
     query_url = gen_query_url(keywords, filters, extra_query_params=extra_query_params)
     driver.set_window_size(1920, 1080)
+    print("Reading from ", query_url)
     driver.get(query_url)
+    WebDriverWait(driver, timeout=300).until(
+        lambda d: len(d.find_elements(By.CLASS_NAME, "iusc")) > 5)
+    
     image_urls = image_url_from_webpage(driver, max_number)
     driver.close()
 
